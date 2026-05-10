@@ -1,4 +1,3 @@
-// LinkedList.cpp
 #include "LinkedList.hpp"
 #include <stdexcept>
 
@@ -6,6 +5,21 @@
 LinkedList::LinkedList()
     : head(nullptr), size(0)
 {
+}
+
+LinkedList::LinkedList(const LinkedList& other) : head(nullptr), size(other.size)
+{
+    if (other.head == nullptr) return;
+
+    head = new Node(other.head->value, other.head->priority);
+    Node* currentNew = head;
+    Node* currentOld = other.head->next;
+
+    while (currentOld != nullptr) {
+        currentNew->next = new Node(currentOld->value, currentOld->priority);
+        currentNew = currentNew->next;
+        currentOld = currentOld->next;
+    }
 }
 
 LinkedList::~LinkedList()

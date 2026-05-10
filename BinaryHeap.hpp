@@ -22,6 +22,7 @@ private:
 public:
 
 	BinaryHeap(size_t capacity = 16);
+	BinaryHeap(const BinaryHeap& other);	//copy constructor for easy creation of copies during benchmarking
 	~BinaryHeap() override;
 
 	void insert(int data, unsigned int prio) override;
@@ -29,5 +30,5 @@ public:
 	int findMax() const override;
 	void modifyKey(int data, unsigned int prio) override;
 	size_t returnSize() const override;
-	
+
 };

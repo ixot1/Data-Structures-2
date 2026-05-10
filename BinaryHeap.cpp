@@ -1,4 +1,3 @@
-// BinaryHeap.cpp
 #include "BinaryHeap.hpp"
 #include <stdexcept>
 #include <utility> // for std::swap
@@ -6,6 +5,14 @@
 BinaryHeap::BinaryHeap(size_t capacity) : capacity(capacity), size(0), insertionCounter(0)
 {
     heap = new Node[capacity];
+}
+
+BinaryHeap::BinaryHeap(const BinaryHeap& other) : capacity(other.capacity), size(other.size), insertionCounter(other.insertionCounter)
+{
+    heap = new Node[capacity];
+    for (size_t i = 0; i < size; ++i) {
+        heap[i] = other.heap[i];
+    }
 }
 
 BinaryHeap::~BinaryHeap()

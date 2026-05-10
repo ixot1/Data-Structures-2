@@ -127,6 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Benchmark.cpp" />
+    <ClCompile Include="BenchmarkMenu.cpp" />
     <ClCompile Include="BinaryHeap.cpp" />
     <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="main.cpp" />
@@ -135,6 +137,8 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Benchmark.hpp" />
+    <ClInclude Include="BenchmarkMenu.hpp" />
     <ClInclude Include="BinaryHeap.hpp" />
     <ClInclude Include="LinkedList.hpp" />
     <ClInclude Include="Queues.hpp" />
