@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <utility> // for std::swap
 
-BinaryHeap::BinaryHeap(size_t capacity)    : capacity(capacity), size(0)
+BinaryHeap::BinaryHeap(size_t capacity) : capacity(capacity), size(0), insertionCounter(0)
 {
     heap = new Node[capacity];
 }
@@ -16,23 +16,18 @@ BinaryHeap::~BinaryHeap()
 // Resize heap when full
 void BinaryHeap::resize()
 {
-    capacity *= 2;
+    //If initial capacity equals 0 set newCapacity to 1, else multiply capacity by 2
+    size_t newCapacity = (capacity == 0) ? 1 : capacity * 2;
 
-    // Handle case when capacity is 0 to avoid multiplying by 2 and still having 0
-    if (capacity == 0) 
-    { 
-        capacity = 1; 
-    }
+    Node* newHeap = new Node[newCapacity];
 
-    Node* newHeap = new Node[capacity];
-
-    for (size_t i = 0; i < size; ++i)
-    {
+    for (size_t i = 0; i < size; ++i) {
         newHeap[i] = heap[i];
     }
-
     delete[] heap;
+
     heap = newHeap;
+    capacity = newCapacity;
 }
 
 // Restore heap downward
@@ -43,12 +38,16 @@ void BinaryHeap::heapify(size_t index)
     size_t left = 2 * index + 1;
     size_t right = 2 * index + 2;
 
-    if (left < size && heap[left].priority > heap[largest].priority)
+    if (left < size &&
+        (heap[left].priority > heap[largest].priority ||
+            (heap[left].priority == heap[largest].priority && heap[left].order < heap[largest].order)))
     {
         largest = left;
     }
 
-    if (right < size && heap[right].priority > heap[largest].priority)
+    if (right < size &&
+        (heap[right].priority > heap[largest].priority ||
+            (heap[right].priority == heap[largest].priority && heap[right].order < heap[largest].order)))
     {
         largest = right;
     }
@@ -72,6 +71,7 @@ void BinaryHeap::insert(int data, unsigned int prio)
 
     heap[index].value = data;
     heap[index].priority = prio;
+    heap[index].order = ++insertionCounter;
 
     ++size;
 
@@ -80,7 +80,8 @@ void BinaryHeap::insert(int data, unsigned int prio)
     {
         size_t parent = (index - 1) / 2;
 
-        if (heap[parent].priority >= heap[index].priority)
+        if (heap[parent].priority > heap[index].priority ||
+            (heap[parent].priority == heap[index].priority && heap[parent].order < heap[index].order))
         {
             break;
         }
@@ -141,7 +142,8 @@ void BinaryHeap::modifyKey(int data, unsigned int prio)
                 {
                     size_t parent = (index - 1) / 2;
 
-                    if (heap[parent].priority >= heap[index].priority)
+                    if (heap[parent].priority > heap[index].priority ||
+                        (heap[parent].priority == heap[index].priority && heap[parent].order < heap[index].order))
                     {
                         break;
                     }

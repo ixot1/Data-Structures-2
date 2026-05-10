@@ -23,5 +23,5 @@ public:
 	size_t returnSize() const override;
 
 	LinkedList();
-	~LinkedList();
+	~LinkedList() override;
 };

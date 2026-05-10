@@ -25,7 +25,7 @@ void LinkedList::insert(int data, unsigned int prio)
     // Insert at beginning if:
     // - list is empty
     // - new priority is smaller (higher priority)
-    if (head == nullptr || prio < head->priority)
+    if (head == nullptr || prio > head->priority)
     {
         newNode->next = head;
         head = newNode;
@@ -36,7 +36,7 @@ void LinkedList::insert(int data, unsigned int prio)
 
         // Find proper position
         while (current->next != nullptr &&
-            current->next->priority <= prio)
+            current->next->priority >= prio)
         {
             current = current->next;
         }
@@ -56,7 +56,7 @@ int LinkedList::findMax() const
         throw std::out_of_range("List is empty");
     }
 
-    return maxNode->value;
+    return head->value;
 }
 
 // Remove and return max-priority element
@@ -67,37 +67,10 @@ int LinkedList::extractMax()
         throw std::out_of_range("List is empty");
     }
 
-    Node* current = head;
     Node* maxNode = head;
-
-    Node* prev = nullptr;
-    Node* maxPrev = nullptr;
-
-    while (current != nullptr)
-    {
-        if (current->priority > maxNode->priority)
-        {
-            maxNode = current;
-            maxPrev = prev;
-        }
-
-        prev = current;
-        current = current->next;
-    }
-
-    // Remove maxNode
-    if (maxPrev == nullptr)
-    {
-        // maxNode is head
-        head = head->next;
-    }
-    else
-    {
-        maxPrev->next = maxNode->next;
-    }
-
     int value = maxNode->value;
 
+    head = head->next;
     delete maxNode;
     --size;
 
@@ -105,7 +78,7 @@ int LinkedList::extractMax()
 }
 
 // Modify priority of element data to prio
-void LinkedList::modify_key(int data, unsigned int prio)
+void LinkedList::modifyKey(int data, unsigned int prio)
 {
     if (!head)
         throw std::runtime_error("List is empty");
@@ -137,7 +110,7 @@ void LinkedList::modify_key(int data, unsigned int prio)
     current->priority = prio;
 
     // Reinsert node in sorted position
-    if (!head || prio < head->priority)
+    if (!head || prio > head->priority)
     {
         current->next = head;
         head = current;
@@ -147,7 +120,7 @@ void LinkedList::modify_key(int data, unsigned int prio)
         Node* temp = head;
 
         while (temp->next &&
-            temp->next->priority <= prio)
+            temp->next->priority >= prio)
         {
             temp = temp->next;
         }
